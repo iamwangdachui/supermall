@@ -10,7 +10,38 @@
     <recommend-view :recommends="recommends"></recommend-view>
     <!--本周推荐-->
     <feature-view></feature-view>
+    <tab-control class="tab-control" :titles="['流行','新款','精选']"></tab-control>
     <ul>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+      <li>6</li>
+      <li>7</li>
+      <li>8</li>
+      <li>9</li>
+      <li>10</li>
+      <li>11</li>
+      <li>12</li>
+      <li>13</li>
+      <li>14</li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
       <li></li>
       <li></li>
       <li></li>
@@ -30,6 +61,8 @@ import NavBar from "components/common/navbar/NavBar";
 import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
+import TabControl from "components/content/tabcontrol/TabControl";
+
 import { getHomeMultidata } from "../../network/home";
 
 export default {
@@ -38,7 +71,8 @@ export default {
     NavBar,
     HomeSwiper,
     RecommendView,
-    FeatureView
+    FeatureView,
+    TabControl
   },
   data() {
     return {
@@ -59,7 +93,7 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 40px;
+  padding-top: 44px;
 }
 .home-nav {
   background-color: #f5617b;
@@ -69,5 +103,9 @@ export default {
   right: 0;
   top: 0;
   z-index: 9;
+}
+.tab-control{
+  position: sticky;
+  top: 44px;
 }
 </style>
