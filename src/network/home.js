@@ -5,3 +5,9 @@ export function getHomeMultidata() {
     url: "/supermall/multidata.php"
   })
 }
+
+export function getHomeGoods(type) {
+  return request({
+    url: "/supermall/getGoods.php?type=" + type
+  })
+}

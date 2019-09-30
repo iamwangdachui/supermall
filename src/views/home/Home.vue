@@ -63,7 +63,7 @@ import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 import TabControl from "components/content/tabcontrol/TabControl";
 
-import { getHomeMultidata } from "../../network/home";
+import { getHomeMultidata, getHomeGoods } from "../../network/home";
 
 export default {
   name: "Home",
@@ -77,16 +77,38 @@ export default {
   data() {
     return {
       banners: [],
-      recommends: []
+      recommends: [],
+      goods: {
+        pop: { page: 0, list: [] },
+        news: { page: 0, list: [] },
+        sell: { page: 0, list: [] }
+      }
     };
   },
   created() {
-    getHomeMultidata()
-      .then(res => {
+    //获取轮播图和推荐
+    this.getHomeMultidata();
+    //获取流行商品
+    this.getHomeGoods("pop");
+    // //获取新款商品
+    // this.getHomeGoods("new");
+    // //获取精选商品
+    // this.getHomeGoods("sell");
+  },
+  methods: {
+    getHomeMultidata() {
+      getHomeMultidata().then(res => {
         this.banners = res.data.banner.list;
         this.recommends = res.data.recommend.list;
-      })
-      .catch();
+      });
+    },
+    getHomeGoods(type) {
+      const page = this.goods[type].page + 1;
+      getHomeGoods(type, page).then(res => {
+        this.goods[type].list.push(...res.data.list);
+        this.goods[type].page++;
+      });
+    }
   }
 };
 </script>
@@ -104,7 +126,7 @@ export default {
   top: 0;
   z-index: 9;
 }
-.tab-control{
+.tab-control {
   position: sticky;
   top: 44px;
 }
