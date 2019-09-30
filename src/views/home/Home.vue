@@ -1,9 +1,12 @@
 <template>
   <div id="home">
+    <!--顶部导航-->
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
+    <!--轮播图-->
     <home-swiper :banners="banners"></home-swiper>
+    <!--推荐-->
     <recommend-view :recommends="recommends"></recommend-view>
   </div>
 </template>
@@ -30,7 +33,6 @@ export default {
   created() {
     getHomeMultidata()
       .then(res => {
-        console.log(res);
         this.banners = res.data.banner.list;
         this.recommends = res.data.recommend.list;
       })
