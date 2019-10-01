@@ -6,8 +6,12 @@ export function getHomeMultidata() {
   })
 }
 
-export function getHomeGoods(type) {
+export function getHomeGoods(type, page) {
   return request({
-    url: "/supermall/getGoods.php?type=" + type
+    url: "/supermall/getGoods.php?",
+    params: {
+      type, page
+    }
+
   })
 }

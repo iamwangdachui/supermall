@@ -10,49 +10,8 @@
     <recommend-view :recommends="recommends"></recommend-view>
     <!--本周推荐-->
     <feature-view></feature-view>
-    <tab-control class="tab-control" :titles="['流行','新款','精选']"></tab-control>
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-      <li>8</li>
-      <li>9</li>
-      <li>10</li>
-      <li>11</li>
-      <li>12</li>
-      <li>13</li>
-      <li>14</li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-      <li></li>
-    </ul>
+    <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
+    <goods-list :goods="showGoods"></goods-list>
   </div>
 </template>
 
@@ -62,6 +21,7 @@ import HomeSwiper from "./childComps/HomeSwiper";
 import RecommendView from "./childComps/RecommendView";
 import FeatureView from "./childComps/FeatureView";
 import TabControl from "components/content/tabcontrol/TabControl";
+import GoodsList from "components/content/goods/GoodsList";
 
 import { getHomeMultidata, getHomeGoods } from "../../network/home";
 
@@ -72,7 +32,8 @@ export default {
     HomeSwiper,
     RecommendView,
     FeatureView,
-    TabControl
+    TabControl,
+    GoodsList
   },
   data() {
     return {
@@ -80,28 +41,49 @@ export default {
       recommends: [],
       goods: {
         pop: { page: 0, list: [] },
-        news: { page: 0, list: [] },
+        new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
-      }
+      },
+      currentType: "pop"
     };
+  },
+  computed:{
+    showGoods(){
+      return this.goods[this.currentType].list
+    }
   },
   created() {
     //获取轮播图和推荐
     this.getHomeMultidata();
     //获取流行商品
     this.getHomeGoods("pop");
-    // //获取新款商品
-    // this.getHomeGoods("new");
-    // //获取精选商品
-    // this.getHomeGoods("sell");
+    //获取新款商品
+    this.getHomeGoods("new");
+    //获取精选商品
+    this.getHomeGoods("sell");
   },
   methods: {
+    tabClick(index) {
+      switch (index) {
+        case 0:
+          this.currentType = "pop";
+          break;
+        case 1:
+          this.currentType = "new";
+          break;
+        case 2:
+          this.currentType = "sell";
+          break;
+      }
+    },
+    //获取首页数据
     getHomeMultidata() {
       getHomeMultidata().then(res => {
         this.banners = res.data.banner.list;
         this.recommends = res.data.recommend.list;
       });
     },
+    //获取商品列表
     getHomeGoods(type) {
       const page = this.goods[type].page + 1;
       getHomeGoods(type, page).then(res => {
@@ -129,5 +111,6 @@ export default {
 .tab-control {
   position: sticky;
   top: 44px;
+  z-index: 9;
 }
 </style>
