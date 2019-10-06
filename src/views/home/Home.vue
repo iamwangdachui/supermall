@@ -4,14 +4,18 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <!--轮播图-->
-    <home-swiper :banners="banners"></home-swiper>
-    <!--推荐-->
-    <recommend-view :recommends="recommends"></recommend-view>
-    <!--本周推荐-->
-    <feature-view></feature-view>
-    <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
-    <goods-list :goods="showGoods"></goods-list>
+    <div class="wrapper">
+      <div class="content">
+        <!--轮播图-->
+        <home-swiper :banners="banners"></home-swiper>
+        <!--推荐-->
+        <recommend-view :recommends="recommends"></recommend-view>
+        <!--本周推荐-->
+        <feature-view></feature-view>
+        <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
+        <goods-list :goods="showGoods"></goods-list>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +28,8 @@ import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 
 import { getHomeMultidata, getHomeGoods } from "../../network/home";
+
+import BScroll from "better-scroll";
 
 export default {
   name: "Home",
@@ -47,9 +53,9 @@ export default {
       currentType: "pop"
     };
   },
-  computed:{
-    showGoods(){
-      return this.goods[this.currentType].list
+  computed: {
+    showGoods() {
+      return this.goods[this.currentType].list;
     }
   },
   created() {
