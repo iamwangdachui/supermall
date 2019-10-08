@@ -14,6 +14,10 @@ export default {
     probeType: {
       type: Number,
       default: 0
+    },
+    pullUpload: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -25,18 +29,27 @@ export default {
     //1、创建BScroll对象
     this.scroll = new BScroll(this.$refs.wrapper, {
       click: true,
-      probeType: this.probeType
+      probeType: this.probeType,
+      pullUpload: this.pullUpload
     });
 
     //2、监听滚动的位置
     this.scroll.on("scroll", position => {
       this.$emit("scroll", position);
     });
+
+    //3、监听上拉加载更多
+    this.scroll.on("pullingUp", () => {
+      this.$emit("pullingUp")
+    });
   },
   methods: {
     //回到顶部
     scrollTo(x, y, time = 500) {
       this.scroll.scrollTo(x, y, time);
+    },
+    finishPullUp(){
+      this.scroll.finishPullUp()
     }
   }
 };

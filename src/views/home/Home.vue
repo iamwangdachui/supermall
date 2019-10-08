@@ -4,7 +4,14 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
+    <scroll
+      class="content"
+      ref="scroll"
+      :probe-type="3"
+      @scroll="contentScroll"
+      :pull-up-load="true"
+      @pullingUp="loadMore"
+    >
       <!--轮播图-->
       <home-swiper :banners="banners"></home-swiper>
       <!--推荐-->
@@ -92,6 +99,10 @@ export default {
     contentScroll(position) {
       this.isShowTackTop = position.y < -800;
     },
+    loadMore() {
+      this.getHomeGoods(this.currentType);
+      this.$refs.scroll.scroll.refresh();
+    },
     //获取首页数据
     getHomeMultidata() {
       getHomeMultidata().then(res => {
@@ -105,6 +116,7 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page++;
+        this.$refs.scroll.finishPullUp();
       });
     }
   }
