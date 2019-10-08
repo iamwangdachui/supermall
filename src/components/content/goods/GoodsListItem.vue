@@ -1,3 +1,4 @@
+
 <template>
   <div class="goods-item">
     <img :src="goodsItem.show.img" alt />
