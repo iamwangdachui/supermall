@@ -53,6 +53,7 @@ export default {
   padding: 5px;
 }
 .active {
+ 
   color: red;
 }
 .active span {

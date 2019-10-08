@@ -4,7 +4,7 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content">
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
       <!--轮播图-->
       <home-swiper :banners="banners"></home-swiper>
       <!--推荐-->
@@ -14,6 +14,7 @@
       <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
+    <back-top @click.native="backClick" v-show="isShowTackTop"></back-top>
   </div>
 </template>
 
@@ -25,10 +26,9 @@ import FeatureView from "./childComps/FeatureView";
 import TabControl from "components/content/tabcontrol/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
 import Scroll from "components/common/scroll/Scroll";
+import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "../../network/home";
-
-import BScroll from "better-scroll";
 
 export default {
   name: "Home",
@@ -39,7 +39,8 @@ export default {
     FeatureView,
     TabControl,
     GoodsList,
-    Scroll
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -50,7 +51,8 @@ export default {
         new: { page: 0, list: [] },
         sell: { page: 0, list: [] }
       },
-      currentType: "pop"
+      currentType: "pop",
+      isShowTackTop: false
     };
   },
   computed: {
@@ -81,6 +83,14 @@ export default {
           this.currentType = "sell";
           break;
       }
+    },
+    //返回顶部
+    backClick() {
+      this.$refs.scroll.scrollTo(0, 0, 500);
+    },
+    //滚动
+    contentScroll(position) {
+      this.isShowTackTop = position.y < -800;
     },
     //获取首页数据
     getHomeMultidata() {
@@ -124,7 +134,7 @@ export default {
 .content {
   overflow: hidden;
   position: absolute;
-  top:44px;
+  top: 88px;
   bottom: 49px;
   left: 0;
   right: 0;
