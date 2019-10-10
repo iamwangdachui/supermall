@@ -37,19 +37,14 @@ export default {
     this.scroll.on("scroll", position => {
       this.$emit("scroll", position);
     });
-
-    //3、监听上拉加载更多
-    this.scroll.on("pullingUp", () => {
-      this.$emit("pullingUp")
-    });
   },
   methods: {
     //回到顶部
     scrollTo(x, y, time = 500) {
       this.scroll.scrollTo(x, y, time);
     },
-    finishPullUp(){
-      this.scroll.finishPullUp()
+    refresh() {
+      this.scroll.refresh();
     }
   }
 };
