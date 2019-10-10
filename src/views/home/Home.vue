@@ -76,7 +76,8 @@ export default {
     this.getHomeGoods("new");
     //获取精选商品
     this.getHomeGoods("sell");
-
+  },
+  mounted() {
     //监听item中图片加载完成
     this.$bus.$on("itemImageLoad", () => {
       this.$refs.scroll.refresh();
