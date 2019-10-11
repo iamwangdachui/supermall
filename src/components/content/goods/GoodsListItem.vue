@@ -1,4 +1,3 @@
-
 <template>
   <div class="goods-item">
     <img :src="goodsItem.show.img" alt @load="imageLoad" />
@@ -9,7 +8,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 export default {
