@@ -4,6 +4,13 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
+    <tab-control
+      class="tab-control"
+      :titles="['流行','新款','精选']"
+      @tabClick="tabClick"
+      ref="tabControl1"
+      v-show="isTabFixed"
+    ></tab-control>
     <scroll
       class="content"
       ref="scroll"
@@ -13,12 +20,13 @@
       @pullingUp="loadMore"
     >
       <!--轮播图-->
-      <home-swiper :banners="banners"></home-swiper>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"></home-swiper>
+
       <!--推荐-->
       <recommend-view :recommends="recommends"></recommend-view>
       <!--本周流行-->
       <feature-view></feature-view>
-      <tab-control class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"></tab-control>
+      <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl2"></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
     <back-top @click.native="backClick" v-show="isShowTackTop"></back-top>
@@ -60,7 +68,9 @@ export default {
         sell: { page: 0, list: [] }
       },
       currentType: "pop",
-      isShowTackTop: false
+      isShowTackTop: false,
+      tabOffsetTop: 0,
+      isTabFixed: false
     };
   },
   computed: {
@@ -98,14 +108,20 @@ export default {
           this.currentType = "sell";
           break;
       }
+      this.$refs.tabControl1.currentIndex = index;
+      this.$refs.tabControl2.currentIndex = index;
     },
     //返回顶部
     backClick() {
       this.$refs.scroll.scrollTo(0, 0, 500);
     },
-    //滚动
+    //监听滚动
     contentScroll(position) {
-      this.isShowTackTop = position.y < -800;
+      //1、判断回到顶部图片是否显示
+      this.isShowTackTop = position.y < -1000;
+
+      //2、决定tabControl是否吸顶
+      this.isTabFixed = -position.y > this.tabOffsetTop;
     },
     loadMore() {
       this.getHomeGoods(this.currentType);
@@ -126,6 +142,9 @@ export default {
         //完成上拉加载更多
         this.$refs.scroll.finishPullUp();
       });
+    },
+    swiperImageLoad() {
+      this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
     }
   }
 };
@@ -133,23 +152,13 @@ export default {
 
 <style scoped>
 #home {
-  padding-top: 44px;
+  /* padding-top: 44px; */
   height: 100vh;
   position: relative;
 }
 .home-nav {
   background-color: #f5617b;
   color: white;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 9;
-}
-.tab-control {
-  position: sticky;
-  top: 44px;
-  z-index: 9;
 }
 .content {
   overflow: hidden;
@@ -158,5 +167,9 @@ export default {
   bottom: 49px;
   left: 0;
   right: 0;
+}
+.tab-control {
+  position: relative;
+  z-index: 9;
 }
 </style>
