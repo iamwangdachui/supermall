@@ -36,7 +36,7 @@ import Scroll from "components/common/scroll/Scroll";
 import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "../../network/home";
-import {debounce} from "../../common/utils"
+import { debounce } from "../../common/utils";
 
 export default {
   name: "Home",
@@ -109,7 +109,6 @@ export default {
     },
     loadMore() {
       this.getHomeGoods(this.currentType);
-      this.$refs.scroll.scroll.refresh();
     },
     //获取首页数据
     getHomeMultidata() {
@@ -124,6 +123,8 @@ export default {
       getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page++;
+        //完成上拉加载更多
+        this.$refs.scroll.finishPullUp();
       });
     }
   }
@@ -153,7 +154,7 @@ export default {
 .content {
   overflow: hidden;
   position: absolute;
-  top: 88px;
+  top: 44px;
   bottom: 49px;
   left: 0;
   right: 0;

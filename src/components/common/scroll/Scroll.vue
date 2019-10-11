@@ -34,9 +34,19 @@ export default {
     });
 
     //2、监听滚动的位置
-    this.scroll.on("scroll", position => {
-      this.$emit("scroll", position);
-    });
+    if (this.probeType == 2 || this.probeType == 3) {
+      this.scroll.on("scroll", position => {
+        this.$emit("scroll", position);
+      });
+    }
+
+    //3、监听scroll滚动到底部
+    if (this.pullUpload) {
+      this.scroll.on("pullingUp", () => {
+        console.log("滚动到底部");
+        this.$emit("pullingUp");
+      });
+    }
   },
   methods: {
     //回到顶部
@@ -46,6 +56,9 @@ export default {
     refresh() {
       console.log("---");
       this.scroll.refresh();
+    },
+    finishPullUp() {
+      this.scroll && this.scroll.finishPullUp();
     }
   }
 };
