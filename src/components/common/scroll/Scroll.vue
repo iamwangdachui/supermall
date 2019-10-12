@@ -54,7 +54,6 @@ export default {
       this.scroll.scrollTo(x, y, time);
     },
     refresh() {
-      console.log("---");
       this.scroll.refresh();
     },
     finishPullUp() {
