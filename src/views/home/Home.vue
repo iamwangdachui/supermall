@@ -70,13 +70,26 @@ export default {
       currentType: "pop",
       isShowTackTop: false,
       tabOffsetTop: 0,
-      isTabFixed: false
+      isTabFixed: false,
+      saveY: 0
     };
   },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
     }
+  },
+  destroyed() {
+    console.log("destroyed");
+  },
+  activated() {
+    //进入时直接滚动到离开时的位置
+    this.$refs.scroll.scrollTo(0, this.saveY);
+    this.$refs.scroll.refresh();
+  },
+  deactivated() {
+    //离开时记录滚动位置
+    this.saveY = this.$refs.scroll.getScrollY();
   },
   created() {
     //获取轮播图和推荐

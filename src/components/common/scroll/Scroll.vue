@@ -59,6 +59,10 @@ export default {
     },
     finishPullUp() {
       this.scroll && this.scroll.finishPullUp();
+    },
+    getScrollY() {
+      //返回当前滚动位置
+      return this.scroll ? this.scroll.y : 0;
     }
   }
 };
